@@ -17,11 +17,13 @@ namespace CsQuantity
         };
         public QFrequency()
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QuantityUnit.QT_MHz, 0);
             InitConversionMatrix();
         }
         public QFrequency(double value, QuantityUnit QType = QuantityUnit.QT_MHz)
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QType, value);
             InitConversionMatrix();
         }
@@ -104,11 +106,13 @@ namespace CsQuantity
         };
         public QSignalLevel()
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QuantityUnit.QT_dB, 0);
             InitConversionMatrix();
         }
         public QSignalLevel(double value, QuantityUnit QType = QuantityUnit.QT_dBm)
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QType, value);
             InitConversionMatrix();
         }
@@ -194,11 +198,13 @@ namespace CsQuantity
         };
         public QTimes()
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QuantityUnit.QT_S, 0);
             InitConversionMatrix();
         }
         public QTimes(double value, QuantityUnit QType = QuantityUnit.QT_mS)
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QType, value);
             InitConversionMatrix();
         }
@@ -297,7 +303,6 @@ namespace CsQuantity
         public override int GetHashCode() => 0;
     };
 
-
     //-----------------------------------------------------------------------------
     //								Angular Speed
     //-----------------------------------------------------------------------------
@@ -309,11 +314,13 @@ namespace CsQuantity
         };
         public QAngleSpeed()
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QuantityUnit.QT_DpS, 0);
             InitConversionMatrix();
         }
         public QAngleSpeed(double value, QuantityUnit QType = QuantityUnit.QT_DpS)
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QType, value);
             InitConversionMatrix();
         }
@@ -324,7 +331,7 @@ namespace CsQuantity
 
         public double DpS() => GetMount(QuantityUnit.QT_DpS);
         public double DpM() => GetMount(QuantityUnit.QT_DpM);
-        public double DpH() => GetMount(QuantityUnit.QT_mDpH);
+        public double DpH() => GetMount(QuantityUnit.QT_DpH);
         public double mDpS() => GetMount(QuantityUnit.QT_mDpS);
         public double mDpM() => GetMount(QuantityUnit.QT_mDpM);
         public double mDpH() => GetMount(QuantityUnit.QT_mDpH);
@@ -351,10 +358,10 @@ namespace CsQuantity
             double[,] conversion_matrix =
             {
                 //QT_DpS,      QT_mDpS,     QT_DpM,    QT_mDpM,   QT_DpH,   QT_mDpH,   QT_RPM
-                { 1            , 1e3        , 60       , 6e4      , 3600    , 3.6e6    , 1 / 6.0       }, //QT_DpS
+                { 1            , 1e3        , 60       , 6e4      , 3600    , 3.6e6    , 1 / 6.0     }, //QT_DpS
 		        { 1e-3         , 1          , 0.06     , 60       , 3.6     , 3.6e3    , 1e-3 / 6.0  }, //QT_mDpS
 		        { 1.0 / 60.0   , 100 / 6.0  , 1        , 1e3      , 60.0    , 60e3     , 1 / 360.0   }, //QT_DpM
-		        { 1.0 / 6e4    , 1.0 / 60   , 1e-3     , 1        , 6e-2    , 1 / 60.0 , 1.0 / 36e4  }, //QT_mDpM
+		        { 1.0 / 6e4    , 1.0 / 60   , 1e-3     , 1        , 6e-2    , 60.0     , 1.0 / 36e4  }, //QT_mDpM
 		        { 1 / 3600.0   , 1 / 3.6    , 1 / 60.0 , 100 / 6.0, 1       , 1e3      , 1.0 / 2.16e4}, //QT_DpH
 		        { 1.0 / 3.6e6  , 1.0 / 3.6e3, 1.0 / 6e4, 1 / 60.0 , 1e-3     , 1       , 1.0 / 2.16e7}, //QT_mDpH
 		        { 6            , 6e3        , 360      , 36e4     , 21600   , 21.6e6   , 1           }  //QT_RPM
@@ -392,7 +399,6 @@ namespace CsQuantity
 
     };
 
-
     //-----------------------------------------------------------------------------
     //								Angle
     //-----------------------------------------------------------------------------
@@ -404,12 +410,14 @@ namespace CsQuantity
         };
         public QAngle()
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QuantityUnit.QT_Deg, 0);
             InitConversionMatrix();
         }
         public QAngle(double value, QuantityUnit QType = QuantityUnit.QT_Deg)
         {
-            ValueMap.Add(QuantityUnit.QT_Deg, 0);
+            ValueMap = new Dictionary<QuantityUnit, double> { };
+            ValueMap.Add(QType, value);
             InitConversionMatrix();
         }
         public void Deg(double value) => ValueMap.Add(QuantityUnit.QT_Deg, value);
@@ -481,9 +489,9 @@ namespace CsQuantity
             double[,] conversion_matrix =
             {
                 //QT_Deg, QT_mDeg,  QT_Rad
-                { 1      , 1e3    , 0.01745}, //QT_Deg
-		        { 1e-3   , 1      , 17.4533}, //QT_mDeg
-		        { 57.2958, 57295.8, 1      }  //QT_Rad
+                { 1      , 1e3    , 0.01745329251        }, //QT_Deg
+		        { 1e-3   , 1      , 0.0000174532925199433}, //QT_mDeg
+		        { 57.2958, 57295.8, 1                    }  //QT_Rad
             };
 
             ConversionMatrix = conversion_matrix;
@@ -519,8 +527,6 @@ namespace CsQuantity
 
     };
 
-
-
     //-----------------------------------------------------------------------------
     //								Ground Speed
     //-----------------------------------------------------------------------------
@@ -532,11 +538,13 @@ namespace CsQuantity
         };
         public QGroundSpeed()
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QuantityUnit.QT_KMPH, 0);
             InitConversionMatrix();
         }
         public QGroundSpeed(double value, QuantityUnit QType = QuantityUnit.QT_KMPH)
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QType, value);
             InitConversionMatrix();
         }
@@ -570,11 +578,11 @@ namespace CsQuantity
         {
             double[,] conversion_matrix =
             {
-                //QT_MPS, QT_KMPS, QT_MPH, QT_KMPH
-                { 1     , 1e-3   , 60    , 60e-3  }, //QT_MPS
-		        { 1e3   , 1      , 60e3  , 60     }, //QT_KMPS
-		        { 0.0166, 1.66e-5, 1     , 1e-3   }, //QT_MPH
-		        { 6e4   , 60     , 1e3   , 1      }  //QT_KMPH
+                //QT_MPS,     QT_KMPS,    QT_MPH, QT_KMPH
+                { 1         , 0.001     , 3600  , 3.6    }, //QT_MPS
+		        { 1000      , 1         , 3.6e6 , 3600   }, //QT_KMPS
+		        { 0.00027778, 2.7778e-7 , 1     , 0.001  }, //QT_MPH
+		        { 0.27778   , 0.00027778, 1000  , 1      }  //QT_KMPH
             };
 
             ConversionMatrix = conversion_matrix;
@@ -609,7 +617,6 @@ namespace CsQuantity
 
     };
 
-
     //-----------------------------------------------------------------------------
     //								Distance
     //-----------------------------------------------------------------------------
@@ -621,11 +628,13 @@ namespace CsQuantity
         };
         public QDistance()
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QuantityUnit.QT_M, 0);
             InitConversionMatrix();
         }
         public QDistance(double value, QuantityUnit QType = QuantityUnit.QT_M)
         {
+            ValueMap = new Dictionary<QuantityUnit, double> { };
             ValueMap.Add(QType, value);
             InitConversionMatrix();
         }
@@ -650,15 +659,14 @@ namespace CsQuantity
         void InitConversionMatrix()
         {
             double[,] conversion_matrix =
-            //QT_MM,    QT_CM,  QT_M,      QT_KM,     QT_Mile,     QT_INCH, QT_Foot
-            {
-                  { 1,        0.01,   1e-3,        1e-6,      6.2137e-7,   0.0393701,0.00328084},    // QT_MM
+            {     //QT_MM,    QT_CM,  QT_M,        QT_KM,     QT_Mile,     QT_INCH,  QT_Foot
+                  { 1,        0.1,    1e-3,        1e-6,      6.2137e-7,   0.0393701,0.00328084},    // QT_MM
 	              { 10,       1,      0.01,        1e-5,      6.21371e-6,  0.393701 ,0.0328084 },    // QT_CM
 	              { 1e3,      1e2,    1,           1e-3,      0.000621371, 39.3701  ,3.28084   },    // QT_M
 	              { 1e6,      1e5,    1e3,         1,         0.621371,    39370.1  ,3280.84   },    // QT_KM
 	              { 1.609e+6, 160934, 1609.34,     1.60934,   1,           63360    ,5280      },    // QT_Mile
 	              { 25.4,     2.54,   0.0254,      2.54e-5,   1.5783e-5,   1        ,0.0833333 },    // QT_Inch
-	              { 304.8,    30.48,  0.0003048,   0.0003048, 0.000189394, 12       ,1         }     // QT_Foot
+	              { 304.8,    30.48,  0.3048 ,     0.0003048, 0.000189394, 12       ,1         }     // QT_Foot
             };
 
             ConversionMatrix = conversion_matrix;
@@ -704,7 +712,6 @@ namespace CsQuantity
             throw new NotImplementedException();
         }
     };
-
 
     //-----------------------------------------------------------------------------
     //								Quantity Range
