@@ -15,12 +15,12 @@ namespace CsQuantity
         {
             QT_GHz, QT_MHz, QT_KHz, QT_Hz, _NumberOfUnits
         };
-        QFrequency()
+        public QFrequency()
         {
             ValueMap.Add(QuantityUnit.QT_MHz, 0);
             InitConversionMatrix();
         }
-        QFrequency(double value, QuantityUnit QType = QuantityUnit.QT_MHz)
+        public QFrequency(double value, QuantityUnit QType = QuantityUnit.QT_MHz)
         {
             ValueMap.Add(QType, value);
             InitConversionMatrix();
@@ -186,7 +186,7 @@ namespace CsQuantity
     //-----------------------------------------------------------------------------
     //								Time
     //-----------------------------------------------------------------------------
-    class QTimes
+    public class QTimes
     {
         public enum QuantityUnit
         {
@@ -301,7 +301,7 @@ namespace CsQuantity
     //-----------------------------------------------------------------------------
     //								Angular Speed
     //-----------------------------------------------------------------------------
-    class QAngleSpeed
+    public class QAngleSpeed
     {
         public enum QuantityUnit
         {
@@ -396,9 +396,9 @@ namespace CsQuantity
     //-----------------------------------------------------------------------------
     //								Angle
     //-----------------------------------------------------------------------------
-    class QAngle
+    public class QAngle
     {
-	public enum QuantityUnit
+        public enum QuantityUnit
         {
             QT_Deg, QT_mDeg, QT_Rad, _NumberOfUnits
         };
@@ -461,7 +461,7 @@ namespace CsQuantity
             }
             return returnAngle;
         }
-        
+
         private double GetMount(QuantityUnit return_mode)
         {
             // get the setting unit
@@ -470,15 +470,15 @@ namespace CsQuantity
 
             // check the available unit in map
             var first_item = ValueMap.First();
-            double converted_value = first_item.Value * ConversionMatrix[(int)first_item.Key,(int)return_mode];
+            double converted_value = first_item.Value * ConversionMatrix[(int)first_item.Key, (int)return_mode];
 
             return converted_value;
         }
         private Dictionary<QuantityUnit, double> ValueMap;
         private double[,] ConversionMatrix;
-	    private void InitConversionMatrix()
+        private void InitConversionMatrix()
         {
-            double[,] conversion_matrix = 
+            double[,] conversion_matrix =
             {
                 //QT_Deg, QT_mDeg,  QT_Rad
                 { 1      , 1e3    , 0.01745}, //QT_Deg
@@ -518,4 +518,274 @@ namespace CsQuantity
         }
 
     };
+
+
+
+    //-----------------------------------------------------------------------------
+    //								Ground Speed
+    //-----------------------------------------------------------------------------
+    public class QGroundSpeed
+    {
+        public enum QuantityUnit
+        {
+            QT_MPS, QT_KMPS, QT_MPH, QT_KMPH, _NumberOfUnits
+        };
+        public QGroundSpeed()
+        {
+            ValueMap.Add(QuantityUnit.QT_KMPH, 0);
+            InitConversionMatrix();
+        }
+        public QGroundSpeed(double value, QuantityUnit QType = QuantityUnit.QT_KMPH)
+        {
+            ValueMap.Add(QType, value);
+            InitConversionMatrix();
+        }
+        public void KMPh(double value) => ValueMap.Add(QuantityUnit.QT_KMPH, value);
+        public void MPh(double value) => ValueMap.Add(QuantityUnit.QT_MPH, value);
+        public void KMPs(double value) => ValueMap.Add(QuantityUnit.QT_KMPS, value);
+        public void MPs(double value) => ValueMap.Add(QuantityUnit.QT_MPS, value);
+
+        public double KMPh() => GetMount(QuantityUnit.QT_KMPH);
+        public double MPh() => GetMount(QuantityUnit.QT_MPH);
+        public double KMPs() => GetMount(QuantityUnit.QT_KMPS);
+        public double MPs() => GetMount(QuantityUnit.QT_MPS);
+
+        private double GetMount(QuantityUnit return_mode)
+        {
+            // get the setting unit
+            if (ValueMap.ContainsKey(return_mode))
+                return ValueMap[return_mode];
+
+            // check the available unit in map
+            var first_item = ValueMap.First();
+            double converted_value = first_item.Value * ConversionMatrix[(int)first_item.Key, (int)return_mode];
+
+            return converted_value;
+        }
+
+        private Dictionary<QuantityUnit, double> ValueMap;
+
+        double[,] ConversionMatrix;
+        private void InitConversionMatrix()
+        {
+            double[,] conversion_matrix =
+            {
+                //QT_MPS, QT_KMPS, QT_MPH, QT_KMPH
+                { 1     , 1e-3   , 60    , 60e-3  }, //QT_MPS
+		        { 1e3   , 1      , 60e3  , 60     }, //QT_KMPS
+		        { 0.0166, 1.66e-5, 1     , 1e-3   }, //QT_MPH
+		        { 6e4   , 60     , 1e3   , 1      }  //QT_KMPH
+            };
+
+            ConversionMatrix = conversion_matrix;
+        }
+
+        // operators
+        public static QGroundSpeed operator +(QGroundSpeed a, QGroundSpeed b) => new QGroundSpeed(a.KMPh() + b.KMPh());
+        public static QGroundSpeed operator -(QGroundSpeed a, QGroundSpeed b) => new QGroundSpeed(a.KMPh() - b.KMPh());
+        public static double operator /(QGroundSpeed a, QGroundSpeed b) => a.KMPh() / b.KMPh();
+        public static bool operator ==(QGroundSpeed a, QGroundSpeed b) => (a.KMPh() == b.KMPh());
+        public static bool operator >(QGroundSpeed a, QGroundSpeed b) => (a.KMPh() > b.KMPh());
+        public static bool operator <(QGroundSpeed a, QGroundSpeed b) => (a.KMPh() < b.KMPh());
+        public static bool operator >=(QGroundSpeed a, QGroundSpeed b) => (a.KMPh() >= b.KMPh());
+        public static bool operator <=(QGroundSpeed a, QGroundSpeed b) => (a.KMPh() <= b.KMPh());
+        public static bool operator !=(QGroundSpeed a, QGroundSpeed b) => (a.KMPh() != b.KMPh());
+        public override int GetHashCode() => 0;
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(obj, null))
+            {
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
+
+    };
+
+
+    //-----------------------------------------------------------------------------
+    //								Distance
+    //-----------------------------------------------------------------------------
+    public class QDistance
+    {
+        public enum QuantityUnit
+        {
+            QT_MM, QT_CM, QT_M, QT_KM, QT_Mile, QT_INCH, QT_Foot, _NumberOfUnits
+        };
+        public QDistance()
+        {
+            ValueMap.Add(QuantityUnit.QT_M, 0);
+            InitConversionMatrix();
+        }
+        public QDistance(double value, QuantityUnit QType = QuantityUnit.QT_M)
+        {
+            ValueMap.Add(QType, value);
+            InitConversionMatrix();
+        }
+        public void Mm(double value) => ValueMap.Add(QuantityUnit.QT_MM, value);
+        public void Cm(double value) => ValueMap.Add(QuantityUnit.QT_CM, value);
+        public void M(double value) => ValueMap.Add(QuantityUnit.QT_M, value);
+        public void Km(double value) => ValueMap.Add(QuantityUnit.QT_KM, value);
+        public void Mi(double value) => ValueMap.Add(QuantityUnit.QT_Mile, value);
+        public void Inch(double value) => ValueMap.Add(QuantityUnit.QT_INCH, value);
+        public void Foot(double value) => ValueMap.Add(QuantityUnit.QT_Foot, value);
+        public double Mm() => GetMount(QuantityUnit.QT_MM);
+        public double Cm() => GetMount(QuantityUnit.QT_CM);
+        public double M() => GetMount(QuantityUnit.QT_M);
+        public double Km() => GetMount(QuantityUnit.QT_KM);
+        public double Mi() => GetMount(QuantityUnit.QT_Mile);
+        public double Inch() => GetMount(QuantityUnit.QT_INCH);
+        public double Foot() => GetMount(QuantityUnit.QT_Foot);
+
+        private Dictionary<QuantityUnit, double> ValueMap;
+
+        private double[,] ConversionMatrix;
+        void InitConversionMatrix()
+        {
+            double[,] conversion_matrix =
+            //QT_MM,    QT_CM,  QT_M,      QT_KM,     QT_Mile,     QT_INCH, QT_Foot
+            {
+                  { 1,        0.01,   1e-3,        1e-6,      6.2137e-7,   0.0393701,0.00328084},    // QT_MM
+	              { 10,       1,      0.01,        1e-5,      6.21371e-6,  0.393701 ,0.0328084 },    // QT_CM
+	              { 1e3,      1e2,    1,           1e-3,      0.000621371, 39.3701  ,3.28084   },    // QT_M
+	              { 1e6,      1e5,    1e3,         1,         0.621371,    39370.1  ,3280.84   },    // QT_KM
+	              { 1.609e+6, 160934, 1609.34,     1.60934,   1,           63360    ,5280      },    // QT_Mile
+	              { 25.4,     2.54,   0.0254,      2.54e-5,   1.5783e-5,   1        ,0.0833333 },    // QT_Inch
+	              { 304.8,    30.48,  0.0003048,   0.0003048, 0.000189394, 12       ,1         }     // QT_Foot
+            };
+
+            ConversionMatrix = conversion_matrix;
+        }
+
+        double GetMount(QuantityUnit return_mode)
+        {
+            // get the setting unit
+            if (ValueMap.ContainsKey(return_mode))
+                return ValueMap[return_mode];
+
+            // check the available unit in map
+            var first_item = ValueMap.First();
+            double converted_value = first_item.Value * ConversionMatrix[(int)first_item.Key, (int)return_mode];
+
+            return converted_value;
+        }
+
+        // operators
+        public static QDistance operator +(QDistance a, QDistance b) => new QDistance(a.M() + b.M());
+        public static QDistance operator -(QDistance a, QDistance b) => new QDistance(a.M() - b.M());
+        public static double operator /(QDistance a, QDistance b) => a.M() / b.M();
+        public static bool operator ==(QDistance a, QDistance b) => a.M() == b.M();
+        public static bool operator >(QDistance a, QDistance b) => a.M() > b.M();
+        public static bool operator <(QDistance a, QDistance b) => a.M() < b.M();
+        public static bool operator >=(QDistance a, QDistance b) => a.M() >= b.M();
+        public static bool operator <=(QDistance a, QDistance b) => a.M() <= b.M();
+        public static bool operator !=(QDistance a, QDistance b) => a.M() != b.M();
+        public override int GetHashCode() => 0;
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(obj, null))
+            {
+                return false;
+            }
+
+            throw new NotImplementedException();
+        }
+    };
+
+
+    //-----------------------------------------------------------------------------
+    //								Quantity Range
+    //-----------------------------------------------------------------------------
+    public class QRange<T>
+    {
+        public QRange() { }
+        public QRange(T lower, T upper)
+        {
+            if (Comparer<T>.Default.Compare(lower, upper) < 0)
+            {
+                LowerValue = upper;
+                UpperValue = lower;
+            }
+            else
+            {
+                LowerValue = lower;
+                UpperValue = upper;
+            }
+        }
+
+        public void SetLower(T lower) => LowerValue = lower;
+        public void SetUpper(T upper) => UpperValue = upper;
+        public void Expand(T includeCoord)
+        {
+            var diff = Comparer<T>.Default.Compare(LowerValue, includeCoord);
+            if (diff > 0)
+            {
+                LowerValue = includeCoord;
+            }
+
+            diff = Comparer<T>.Default.Compare(UpperValue, includeCoord);
+            if (diff < 0)
+            {
+                UpperValue = includeCoord;
+            }
+        }
+        public void Expand(QRange<T> otherRange)
+        {
+            var diff = Comparer<T>.Default.Compare(LowerValue, otherRange.Lower());
+            if (diff > 0)
+            {
+                LowerValue = otherRange.Lower();
+            }
+
+            diff = Comparer<T>.Default.Compare(UpperValue, otherRange.Upper());
+            if (diff < 0)
+            {
+                UpperValue = otherRange.Upper();
+            }
+        }
+
+        bool IsInRange(T value)
+        {
+            var lower_great = Comparer<T>.Default.Compare(value , Lower()) >= 0;
+            var upper_lower = Comparer<T>.Default.Compare(value , Upper()) <= 0;
+            return lower_great && upper_lower; 
+        }
+        bool Contains(T value)
+        {
+            return IsInRange(value);
+        }
+        bool Contains(QRange<T> range) 
+        { 
+            return Contains(range.Lower()) && Contains(range.Upper()); 
+        }
+
+        T Lower() => LowerValue;
+        T Upper() => UpperValue;
+        //T Center() => (Upper() + Lower()) / 2.0;
+        //T Size() => (Upper() - Lower());
+
+        T LowerValue;
+        T UpperValue;
+
+        //public static bool operator ==(QRange<T> a, QRange<T> b) { return (a.Lower() == b.Lower() && a.Upper() == b.Upper()); }
+        //public static bool operator >(QRange<T> a, QRange<T> b) { return (a.Lower() > b.Lower() && a.Upper() > b.Upper()); }
+        //public static bool operator <(QRange<T> a, QRange<T> b) { return (a.Lower() < b.Lower() && a.Upper() < b.Upper()); }
+        //public static bool operator >=(QRange<T> a, QRange<T> b) { return (a.Lower() >= b.Lower() && a.Upper() >= b.Upper()); }
+        //public static bool operator <=(QRange<T> a, QRange<T> b) { return (a.Lower() <= b.Lower() && a.Upper() <= b.Upper()); }
+        //public static bool operator !=(QRange<T> a, QRange<T> b) { return (a.Lower() != b.Lower() && a.Upper() != b.Upper()); }
+    };
 }
+

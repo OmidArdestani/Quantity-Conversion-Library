@@ -42,6 +42,12 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "dependencies": {
+            "Microsoft.TestPlatform": {
+              "target": "Package",
+              "version": "[17.7.2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
