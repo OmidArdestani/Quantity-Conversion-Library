@@ -347,4 +347,8 @@ There is examples of each Quantity that is in the QuantityTest.cpp file.
         }
 ```
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+Free
+
+## Author
+Omid Ardestani
+o.ardestani@hotmail.com
